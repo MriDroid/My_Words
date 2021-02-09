@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "57036601748",
+    "firebase_url": "https://mywords-ac7e4-default-rtdb.firebaseio.com",
+    "project_id": "mywords-ac7e4",
+    "storage_bucket": "mywords-ac7e4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:57036601748:android:3cf5d6a649a0066e16b781",
+        "android_client_info": {
+          "package_name": "com.example.mywords"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "57036601748-37n8qfskesg2rhnnrvhn10t7s9rq9f15.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMBXPret8j6x322RKJsyMBq2wO7CZBJ6o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "57036601748-37n8qfskesg2rhnnrvhn10t7s9rq9f15.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
