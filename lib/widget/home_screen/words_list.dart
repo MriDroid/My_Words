@@ -43,10 +43,10 @@ class WordsList extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              _word.en,
+              _word.en!,
             ),
             Text(
-              _word.ar,
+              _word.ar!,
               textDirection: TextDirection.rtl,
             ),
           ],
@@ -55,7 +55,7 @@ class WordsList extends StatelessWidget {
     );
   }
 
-  void _showAddEditSheet(BuildContext ctx, {String id}) {
+  void _showAddEditSheet(BuildContext ctx, {String? id}) {
     showModalBottomSheet(
       context: ctx,
       builder: (_) {

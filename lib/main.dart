@@ -11,7 +11,7 @@ import './screen/search_screen.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +24,7 @@ class MyApp extends StatelessWidget {
         themeMode: ThemeMode.dark,
         home: HomeScreen(),
         routes: {
+          HomeScreen.routeName: (_) => HomeScreen(),
           SearchScreen.routeName: (_) => SearchScreen(),
         },
       ),

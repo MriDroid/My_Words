@@ -22,10 +22,11 @@ class _SearchScreenState extends State<SearchScreen> {
         title: Text('Search'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(10.0),
         child: ListView(
           children: [
             TextField(
+              autofocus: true,
               decoration: InputDecoration(labelText: 'Word'),
               onChanged: (value) {
                 setState(() {

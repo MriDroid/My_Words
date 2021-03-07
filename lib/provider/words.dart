@@ -8,10 +8,10 @@ import 'package:http/http.dart' as http;
 import '../models/http_exception.dart';
 
 class Word with ChangeNotifier {
-  String id;
-  String en;
-  String ar;
-  DateTime createdAt;
+  String? id;
+  String? en;
+  String? ar;
+  DateTime? createdAt;
 
   Word({this.id, this.en, this.ar, this.createdAt});
 }
@@ -22,14 +22,14 @@ class Words with ChangeNotifier {
 
   List<Word> get words => [..._words];
 
-  Word findById(String id) => _words.firstWhere((element) => element.id == id);
+  Word findById(String? id) => _words.firstWhere((element) => element.id == id);
 
   List<Word> filterWords(String word) {
     return [
       ..._words
           .where((element) => RegExp('[a-zA-Z]').hasMatch(word)
-              ? element.en.toLowerCase().contains(word)
-              : element.ar.contains(word))
+              ? element.en!.toLowerCase().contains(word)
+              : element.ar!.contains(word))
           .toList()
     ];
   }
@@ -37,9 +37,9 @@ class Words with ChangeNotifier {
   Future<void> fetchWords() async {
     final url = '$mainUrl/words.json';
     try {
-      final response = await http.get(url);
+      final response = await http.get(Uri.parse(url));
       _words.clear();
-      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      final extractedData = json.decode(response.body) as Map<String, dynamic>?;
       if (extractedData == null) return;
       extractedData.forEach((id, data) => _words.add(
             Word(
@@ -48,7 +48,7 @@ class Words with ChangeNotifier {
                 ar: data['ar'],
                 createdAt: DateTime.parse(data['createdAt'])),
           ));
-      _words.sort((f, s) => f.en.compareTo(s.en));
+      _words.sort((f, s) => f.en!.compareTo(s.en!));
       notifyListeners();
     } catch (e) {
       throw HttpException('Please check your internet connection');
@@ -58,7 +58,7 @@ class Words with ChangeNotifier {
   Future<void> addWord(Word word) async {
     final url = '$mainUrl/words.json';
     try {
-      final response = await http.post(url,
+      final response = await http.post(Uri.parse(url),
           body: json.encode(
             {
               'en': word.en,
@@ -68,18 +68,18 @@ class Words with ChangeNotifier {
           ));
       word.id = json.decode(response.body)['name'];
       _words.add(word);
-      _words.sort((f, s) => f.en.compareTo(s.en));
+      _words.sort((f, s) => f.en!.compareTo(s.en!));
       notifyListeners();
     } catch (e) {
       throw HttpException('Please try again');
     }
   }
 
-  Future<void> updateWord(Word word, String id) async {
+  Future<void> updateWord(Word word, String? id) async {
     final url = '$mainUrl/words/$id.json';
     final _editedWordIndex = _words.indexWhere((element) => element.id == id);
     try {
-      await http.patch(url,
+      await http.patch(Uri.parse(url),
           body: json.encode(
             {
               'en': word.en,
@@ -87,18 +87,18 @@ class Words with ChangeNotifier {
             },
           ));
       _words[_editedWordIndex] = word;
-      _words.sort((f, s) => f.en.compareTo(s.en));
+      _words.sort((f, s) => f.en!.compareTo(s.en!));
       notifyListeners();
     } catch (e) {
       throw HttpException('Please try again');
     }
   }
 
-  Future<void> deleteWord(String id) async {
+  Future<void> deleteWord(String? id) async {
     final url = '$mainUrl/words/$id.json';
     final _deletedWordIndex = _words.indexWhere((element) => element.id == id);
     try {
-      await http.delete(url);
+      await http.delete(Uri.parse(url));
       _words.removeAt(_deletedWordIndex);
       notifyListeners();
     } catch (e) {

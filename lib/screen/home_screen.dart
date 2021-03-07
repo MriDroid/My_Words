@@ -85,7 +85,8 @@ class _HomeScreenState extends State<HomeScreen> {
       });
       await Provider.of<Words>(context, listen: false).fetchWords();
     } catch (e) {
-      _scaffoldKey.currentState.showSnackBar(SnackBar(
+      // _scaffoldKey.currentState.showSnackBar
+      ScaffoldMessenger.maybeOf(context)!.showSnackBar(SnackBar(
         content: Text(e.toString()),
         backgroundColor: Theme.of(context).errorColor,
         behavior: SnackBarBehavior.floating,
@@ -97,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  void _showAddEditSheet(BuildContext ctx, {String id}) {
+  void _showAddEditSheet(BuildContext ctx, {String? id}) {
     showModalBottomSheet(
       context: ctx,
       builder: (_) {

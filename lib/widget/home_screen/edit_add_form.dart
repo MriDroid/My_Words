@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import '../../provider/words.dart';
 
 class EditAddForm extends StatefulWidget {
-  final String id;
+  final String? id;
   EditAddForm({this.id});
 
   @override
@@ -17,7 +17,7 @@ class _EditAddFormState extends State<EditAddForm> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   bool _isEdit = false;
   bool _isLoading = false;
-  Word _word;
+  late Word _word;
 
   @override
   void initState() {
@@ -34,6 +34,7 @@ class _EditAddFormState extends State<EditAddForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
+      resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
         child: Card(
           elevation: 5,
@@ -46,12 +47,13 @@ class _EditAddFormState extends State<EditAddForm> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
                   TextFormField(
+                    autofocus: true,
                     initialValue: _word.en,
                     decoration: InputDecoration(labelText: 'English Word'),
                     onSaved: (val) => _word.en = val,
                     keyboardType: TextInputType.text,
                     validator: (val) {
-                      if (val.isEmpty) return 'Please Enter a Word';
+                      if (val!.isEmpty) return 'Please Enter a Word';
                       return null;
                     },
                   ),
@@ -63,7 +65,7 @@ class _EditAddFormState extends State<EditAddForm> {
                       onSaved: (val) => _word.ar = val,
                       keyboardType: TextInputType.text,
                       validator: (val) {
-                        if (val.isEmpty) return 'Please Enter a Word';
+                        if (val!.isEmpty) return 'Please Enter a Word';
                         return null;
                       },
                     ),
@@ -72,7 +74,7 @@ class _EditAddFormState extends State<EditAddForm> {
                     padding: const EdgeInsets.all(10.0),
                     child: _isLoading
                         ? CircularProgressIndicator()
-                        : RaisedButton(
+                        : ElevatedButton(
                             child: _isEdit ? Text('Edit') : Text('Add'),
                             onPressed: () => _saveForm(),
                           ),
@@ -90,9 +92,9 @@ class _EditAddFormState extends State<EditAddForm> {
     setState(() {
       _isLoading = true;
     });
-    final isValid = _formKey.currentState.validate();
+    final isValid = _formKey.currentState!.validate();
     if (!isValid) return;
-    _formKey.currentState.save();
+    _formKey.currentState!.save();
     try {
       _isEdit
           ? await Provider.of<Words>(context, listen: false)
@@ -100,7 +102,8 @@ class _EditAddFormState extends State<EditAddForm> {
           : await Provider.of<Words>(context, listen: false).addWord(_word);
       Navigator.of(context).pop();
     } catch (e) {
-      _scaffoldKey.currentState.showSnackBar(SnackBar(
+      // _scaffoldKey.currentState.showSnackBar
+      ScaffoldMessenger.maybeOf(context)!.showSnackBar(SnackBar(
         content: Text(e.toString()),
         backgroundColor: Theme.of(context).errorColor,
         behavior: SnackBarBehavior.floating,
